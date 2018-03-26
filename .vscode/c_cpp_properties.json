@@ -28,12 +28,20 @@
             "includePath": [
                 "/usr/include/c++/6",
                 "/usr/include/x86_64-linux-gnu/c++/6",
-                "/usr/local/include",
-                "/usr/include",
+                "/usr/local/include/",
+                "/usr/include/",
                 "/usr/include/x86_64-linux-gnu",
                 "${workspaceRoot}/headers",
                 "/usr/include/linux",
-                "/usr/include/gtk-3.0"
+
+                "/usr/include/gtk-3.0/",
+                "/usr/include/glib-2.0/",
+                "/usr/lib/x86_64-linux-gnu/glib-2.0/include/",
+                "/usr/lib/gcc/x86_64-linux-gnu/6/include/",
+                "/usr/include/pango-1.0/",
+                "/usr/include/cairo/",
+                "/usr/include/gdk-pixbuf-2.0/",
+                "/usr/include/atk-1.0/"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
