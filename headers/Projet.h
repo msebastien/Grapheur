@@ -5,7 +5,7 @@ struct Point2D {
     float x;
     float y;
 };
-typedef Point2D Point;
+typedef struct Point2D Point;
 
 
 /**
@@ -14,8 +14,10 @@ typedef Point2D Point;
 
 
 */
+// TO DO : J'ai défini quelques erreurs random pour que mon compilateur arrête de m'afficher des erreurs partout 
+//et qu'il puisse enfin compiler le projet. Il faudra donc modifier ce type plus tard au fil du développement.
 typedef enum{
-
+    DIV_PAR_ZERO, ERREUR_LEXICALE, ERREUR_SYNTAXE
 }typeerreur;
 
 typedef enum{
@@ -37,17 +39,17 @@ typedef union{
     typeerreur erreur;
 }typevaleur;
 
-typedef struct*{
+typedef struct{
     typelexem lexem;
     typevaleur valeur;
 }typejeton;
 
-struct ARBREST{
+struct ArbreSt{
     typejeton jeton;
-    struct ARBREST * fils_gauche;
-    struct ARBREST * fils_droit;
+    struct ArbreSt * fils_gauche;
+    struct ArbreSt * fils_droit;
 };
-typedef ARBREST * Arbre;
+typedef struct ArbreSt * Arbre;
 
 
 
