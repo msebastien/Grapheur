@@ -17,7 +17,6 @@ struct TableauSt{
 };
 typedef struct TableauSt* Tableau;
 
-Point* creertableau ();
 
 //int tracerGraphe(Point Coordonnees[], float echelle, int intervalleDebut, int intervalleFin, int pas);
 //int obtenirExpression(char* expression);
@@ -41,7 +40,7 @@ static void Begin2DDisplay(void);
 static void End2DDisplay(void);
 
 static void InitDisplay(void);
-void outtextxy(const float x, const float y, const char *str);
+void affichertexteXY(const float x, const float y, const char *str);
 void bar(const float x0, const float y0, const float x1, const float y1);
 
 // FONCTIONS DESSIN
@@ -51,7 +50,7 @@ void tracerLigne(const float x1, const float y1, const float x2, const float y2)
 void tracerLigneContinueDepart(const float x, const float y);
 void tracerLigneContinueSuite(const float x, const float y);
 void tracerLigneContinueFin(void);
-void tracerGraphiqueTableau(Point tableauDesPoints[TAILLE_MAX]);
+Tableau tracerGraphiqueListe(Tableau Points);
 
 // FONCTIONS TEST
 void myKey(int c);
