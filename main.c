@@ -1,21 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <gtk/gtk.h>
-
 #include "Projet.h"
 #include "grapheur.h"
 
 
-int main(int argc, char *argv[])
-{
-    GtkApplication *app;
-    int status;
 
-    app = gtk_application_new("org.gtk.grapheur", G_APPLICATION_FLAGS_NONE);
-    g_signal_connect(app, "activate", G_CALLBACK(creerFenetre), NULL);
-    status = g_application_run(G_APPLICATION(app), argc, argv);
-    g_object_unref(app);
 
-    return status;
+/**
+* main
+*
+* La fonction principale avec deux arguments permettant de récupérer les éléments en ligne de comment.
+*
+* Dans  cet  exemple  les  fonctions  (dites  callback)  myDraw  et  myKey  sont  installées  ici  par
+* l'appel  InitGraph  en  tant  que fonctions  réagissantes  aux  évènements  de  "re-dessinage"  (pour  myDraw)
+* et  aux  évènements  d'appui  sur  une  touche  du
+* clavier (myKey).
+µ
+* @parma ac : nombre de parametres
+* @parma av : tableau contenant les parametres
+*
+*/
+int main(int argc, char* argv[]) {
+	
+	/*char* expression = NULL;
+	
+	printf("Bienvenue dans Grapheur\n");
+	printf("Entrez une expression fonctionnelle : \n");
+	
+	gets(expression);*/
+	
+	InitialiserGraphique(argc, argv, "Grapheur", 800, 600, myDraw, myKey);
+
+	return EXIT_SUCCESS;
 }
