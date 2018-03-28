@@ -7,7 +7,25 @@ static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
 
+Tableau creerListe(Tableau Points){
+	Tableau Ret = Points;
+	for (i = -1; i < 1; i += 0.1){
+		Points = malloc (sizeof (struct TableauSt));
+		Points->x = i;
+		Points->y = cos(i);
+		Points = Points->suivant;
+	}
+	return Ret;
+}
 
+void freeListe(Tableau Points){
+	if (Points->suivant == NULL){
+		free(Points);
+	}else {
+		freeListe(Points->suivant);
+		free(Points);
+	}
+}
 
 Point* creertableau() {
 	Point tableau_evaluateur[TAILLE_MAX];

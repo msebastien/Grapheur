@@ -10,7 +10,13 @@
 
 #define TAILLE_MAX 256
 
-Point* creertableau();
+struct TableauSt{
+	float x;
+	float y;
+	struct TableauST* suivant;
+}; typedef struct TableauSt* Tableau;
+
+Point* creertableau ();
 
 //int tracerGraphe(Point Coordonnees[], float echelle, int intervalleDebut, int intervalleFin, int pas);
 //int obtenirExpression(char* expression);
