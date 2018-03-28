@@ -11,7 +11,7 @@ static void(*AppliTouche)(int);
 
 Point* creertableau() {
 	Point tableau_evaluateur[TAILLE_MAX];
-		for (float i = -1.0; i <= 1.0; i+=0.01) {
+		for (float i = -10.0; i <= 10.0; i+=0.01) {
 			for (int j = 0; j < TAILLE_MAX; j++){
 			tableau_evaluateur[j].x = (double)i; // x
 			tableau_evaluateur[j].y = sin((double)i); // f(x)
@@ -19,6 +19,7 @@ Point* creertableau() {
 	}
 		return tableau_evaluateur;
 }
+
 /**
 * GlutRedimensionner
 *
@@ -38,7 +39,7 @@ static void GlutRedimensionner(const int l, const int h)
 
 static void GlutIdle(void)
 {
-	//  glutPostRedisplay();
+	  //glutPostRedisplay();
 }
 
 static void GlutTouche(const unsigned char c, const int x, const int y)
@@ -300,6 +301,9 @@ void myKey(int c)
 */
 void myDraw(void)
 {
+	// Change l'échelle des axes
+	glScaled(1.0,1.0,0.0);
+
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
 	if (bascule)
