@@ -13,8 +13,6 @@ static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
 
-float scale_x = 1.0;
-float scale_y = 1.0;
 
 char* convFloatString(float x) {
 	char* str = NULL;
@@ -331,16 +329,20 @@ void myKey(int c)
 		zoomOut = 1;
 		break;
 	case 'z':
-		deplacementY += 1;
+		deplacementY -= 1;
 		break;
 	case 's':
-		deplacementY -= 1;
+		deplacementY += 1;
 		break;
 	case 'q':
 		deplacementX -= 1;
 		break;
 	case 'd':
 		deplacementX += 1;
+		break;
+	case 'r':
+		deplacementX = 0;
+		deplacementY = 0;
 		break;
 	}
 }
