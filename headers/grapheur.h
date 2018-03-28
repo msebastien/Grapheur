@@ -13,8 +13,9 @@
 struct TableauSt{
 	float x;
 	float y;
-	struct TableauST* suivant;
-}; typedef struct TableauSt* Tableau;
+	struct TableauSt* suivant;
+};
+typedef struct TableauSt* Tableau;
 
 Point* creertableau ();
 
@@ -22,6 +23,10 @@ Point* creertableau ();
 //int obtenirExpression(char* expression);
 //int afficherErreur(typeerreur erreur);
 //int obtenirEchelle(float echelle, int intervalleDebut, int intervalleFin, int pas);
+
+Tableau insererDansTableau(Tableau t, double i);
+Tableau creerListe();
+void freeListe(Tableau Points);
 
 void InitialiserGraphique(int ac, char *av[],
 	const char *NomFenetre, const int l, const int h, void(*Dessin)(void),
@@ -41,6 +46,7 @@ void bar(const float x0, const float y0, const float x1, const float y1);
 
 // FONCTIONS DESSIN
 void changerCouleur(const float r, const float g, const float b);
+void tracerPoint(const float x, const float y);
 void tracerLigne(const float x1, const float y1, const float x2, const float y2);
 void tracerLigneContinueDepart(const float x, const float y);
 void tracerLigneContinueSuite(const float x, const float y);
