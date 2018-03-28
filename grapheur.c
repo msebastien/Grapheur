@@ -355,6 +355,7 @@ void myKey(int c)
 */
 void myDraw(void)
 {	
+	// Changement du curseur
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 	
 	// Change l'échelle des axes
@@ -367,7 +368,7 @@ void myDraw(void)
 		zoomOut = 0;
 	}
 	else if (zoomIn && !zoomOut) {
-		if (scale_x < 4.1 && scale_y < 4.1) {
+		if (scale_x < 3.1 && scale_y < 3.1) {
 			scale_x += 0.1;
 			scale_y += 0.1;
 		}
@@ -375,11 +376,6 @@ void myDraw(void)
 	}
 	glScaled(scale_x, scale_y, 0.0);
 
-	
-
-
-	tracerQuadrillage(deplacementX, deplacementY);
-	tracerAxes(deplacementX, deplacementY);
 
 	tracerQuadrillage();
 	tracerAxes();
@@ -390,6 +386,11 @@ void myDraw(void)
 	courbe = tracerGraphiqueListe(courbe);
 
 	// AFFICHAGE INFOS
+	changerCouleur(1.0F, 0.0F, 0.0F);
+	affichertexteXY( (0.0 / scale_x) + deplacementX, (0.9 / scale_y), "Y");
+	affichertexteXY( (0.9 / scale_x), (0.0 / scale_y) + deplacementY, "X");
+
+	changerCouleur(0.0F, 1.0F, 0.0F);
 	affichertexteXY(-1.0 / scale_x, 0.9 / scale_y, "Scale :");
 	affichertexteXY(-0.8/scale_x, 0.9/scale_y, convFloatString(scale_x));
 
