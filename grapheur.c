@@ -16,6 +16,16 @@ static void(*AppliTouche)(int);
 float scale_x = 1.0;
 float scale_y = 1.0;
 
+char* convFloatString(float x) {
+	char* str = NULL;
+	int nombre = (int)(x)+1;
+	str = malloc( 20 );
+
+	sprintf_s(str, 20,"%f", x);
+
+	return str;
+}
+
 Tableau creerListe() {
 	Tableau t;
 	t = NULL;
@@ -187,6 +197,7 @@ void InitialiserGraphique(int ac, char *av[],
 	glutInit(&ac, av);
 	
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	//glutEstablishOverlay();
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(Largeur, Hauteur);
 
@@ -315,7 +326,6 @@ void myKey(int c)
 	{
 	case 'e':
 		zoomIn = 1; /* La bascule passe alternativement de 0 a 1 */
-		printf("%d",zoomIn);
 		break;
 	case 'a':
 		zoomOut = 1;
@@ -355,20 +365,31 @@ void myDraw(void)
 		zoomOut = 0;
 	}
 	else if (zoomIn && !zoomOut) {
-		scale_x += 0.1;
-		scale_y += 0.1;
+		if (scale_x < 4.1 && scale_y < 4.1) {
+			scale_x += 0.1;
+			scale_y += 0.1;
+		}
 		zoomIn = 0;
 	}
 	glScaled(scale_x, scale_y, 0.0);
 
-	affichertexteXY(-1.0, 0.9, itoa(f, scale_x, 10));
+	
+
 
 	tracerQuadrillage(deplacementX, deplacementY);
 	tracerAxes(deplacementX, deplacementY);
+
+	tracerQuadrillage();
+	tracerAxes();
+
 	changerCouleur(0.0F, 0.0F, 1.0F);
 	
 	Tableau courbe = creerListe();
 	courbe = tracerGraphiqueListe(courbe);
+
+	// AFFICHAGE INFOS
+	affichertexteXY(-1.0 / scale_x, 0.9 / scale_y, "Scale :");
+	affichertexteXY(-0.8/scale_x, 0.9/scale_y, convFloatString(scale_x));
 
 	freeListe(courbe);
 }
