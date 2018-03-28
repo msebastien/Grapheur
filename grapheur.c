@@ -10,6 +10,7 @@ static void(*AppliTouche)(int);
 Tableau creerListe() {
 	Tableau t;
 	t = NULL;
+	t = malloc (sizeof (struct TableauSt))
 
 	for (double i = -1; i < 1; i += 0.01) {
 		t = insererDansTableau(t, i);
@@ -19,22 +20,20 @@ Tableau creerListe() {
 }
 Tableau insererDansTableau(Tableau t, double i){
 	// Nouveau maillon
-	Tableau Points;
-	Points = malloc(sizeof(struct TableauSt));
+	Tableau Points = NULL;
+	if(t != NULL) {
+		Points = malloc(sizeof(struct TableauSt));
 
-	// Initilaisation de ses champs
+		// Initilaisation de ses champs
 		Points->x = i;
 		Points->y = cos(i);
-
-		Points->suivant = NULL;
-		Points = Points->suivant;
+		
+		// Insertion en tête de liste
 	
-	// Insertion en tête de liste
-	if(t != NULL) {
 		Points->suivant = t;
 	}
 
-	return t;
+	return Points;
 }
 
 void freeListe(Tableau Points){
@@ -260,12 +259,13 @@ void tracerLigneContinueFin() {
 Tableau tracerGraphiqueListe(Tableau Points) {
 	Tableau Ret = Points;
 
-	tracerLigneContinueDepart(Points->x, Points->y);
+	glBegin(GL_LINE_STRIP);
+	glVertex2f(Points->x, Points->y);
 	while (Points->suivant != NULL) {
 		Points = Points->suivant;
-		tracerLigneContinueSuite(Points->x, Points->y);
+		glVertex2f(Points->x, Points->y);
 	}
-	tracerLigneContinueFin();
+	glEnd();
 	return Ret;
 }
 
@@ -357,7 +357,7 @@ void myDraw(void)
 	
 	//changerCouleur(1.0F, 1.0F, 0.0F);
 	Tableau courbe = creerListe();
-	tracerGraphiqueListe(courbe);
+	courbe = tracerGraphiqueListe(courbe);
 
 	//tracerGraphiqueTableau(creertableau());
 	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
