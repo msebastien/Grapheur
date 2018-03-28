@@ -1,11 +1,14 @@
 ﻿#include "Projet.h"
 #include "grapheur.h"
 
-int bascule = 0;
+int zoomIn = 0, zoomOut = 0;
 static int NumeroFenetre;
 static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
+
+float scale_x = 1.0;
+float scale_y = 1.0;
 
 Tableau creerListe() {
 	Tableau t;
@@ -120,16 +123,16 @@ static void GlutDraw(void)
 }
 
 /**
-* outtextxy
+* afficherTexteXY
 *
 * Cette proc�dure permet d'ecrit une chaine de charact�re s dans une zone de texte d�finie par les coordonn�es x et y
 *
 * @parma x abscisse du point (coint gauche superieur) de la zone de texte
-* @parma y ordonn�e du point (coint gauche superieur) de la zone de texte
-* @parma s tableau de charct�res
+* @parma y ordonnee du point (coint gauche superieur) de la zone de texte
+* @parma s tableau de charcteres
 *
 */
-void outtextxy(const float x, const float y, const char *str)
+void affichertexteXY(const float x, const float y, const char *str)
 {
 	const char *s = str;
 
@@ -304,8 +307,12 @@ void myKey(int c)
 {
 	switch (c)
 	{
+	case 'z':
+		zoomIn = 1; /* La bascule passe alternativement de 0 a 1 */
+		printf("%d",zoomIn);
+		break;
 	case 'a':
-		bascule ^= 1; /* La bascule passe alternativement de 0 a 1 */
+		zoomOut = 1;
 		break;
 	}
 }
@@ -317,33 +324,33 @@ void myKey(int c)
 *
 */
 void myDraw(void)
-{
-	// Change l'échelle des axes
-	glScaled(0.2, 0.2,0.0);
-
+{	
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
-	if (bascule)
+	// Change l'échelle des axes
+	if (zoomOut && !zoomIn)
 	{
-		/* Trace un rectangle rouge a l'ecran si active
-		* par appui de la touche 'a' */
-		changerCouleur(1.0F, 0.0F, 0.0F);
-		bar(-0.5F, -0.5F, 0.5F, 0.5F);
+		if (scale_x > 0.1 && scale_y > 0.1 ) {
+			scale_x -= 0.1;
+			scale_y -= 0.1;
+		}
+		zoomOut = 0;
 	}
+	else if (zoomIn && !zoomOut) {
+		scale_x += 0.1;
+		scale_y += 0.1;
+		zoomIn = 0;
+	}
+	glScaled(scale_x, scale_y, 0.0);
+
+	affichertexteXY(-1.0, 0.9, itoa(f, scale_x, 10));
 
 	tracerQuadrillage(2);
-<<<<<<< HEAD
 	tracerAxes();
-=======
-	tracerAxes(2);
 	changerCouleur(0.0F, 0.0F, 1.0F);
+	
 	Tableau courbe = creerListe();
 	courbe = tracerGraphiqueListe(courbe);
 
-	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
-	
->>>>>>> 5e29cd105ebad10fc3e8d2fb5a7da13d3e3c2dda
-	
 	freeListe(courbe);
-
 }
