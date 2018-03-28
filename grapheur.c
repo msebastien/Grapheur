@@ -7,15 +7,34 @@ static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
 
-Tableau creerListe(Tableau Points){
-	Tableau Ret = Points;
-	for (i = -1; i < 1; i += 0.1){
-		Points = malloc (sizeof (struct TableauSt));
+Tableau creerListe() {
+	Tableau t;
+	t = NULL;
+
+	for (double i = -1; i < 1; i += 0.01) {
+		t = insererDansTableau(t, i);
+	}
+
+	return t;
+}
+Tableau insererDansTableau(Tableau t, double i){
+	// Nouveau maillon
+	Tableau Points;
+	Points = malloc(sizeof(struct TableauSt));
+
+	// Initilaisation de ses champs
 		Points->x = i;
 		Points->y = cos(i);
+
+		Points->suivant = NULL;
 		Points = Points->suivant;
+	
+	// Insertion en tête de liste
+	if(t != NULL) {
+		Points->suivant = t;
 	}
-	return Ret;
+
+	return t;
 }
 
 void freeListe(Tableau Points){
@@ -218,7 +237,7 @@ void tracerLigneContinueFin() {
 }
 
 //tracer le graphique de la fonction rentrée
-void tracerGraphiqueTableau(Point tableauDesPoints[TAILLE_MAX]) {
+/*void tracerGraphiqueTableau(Point tableauDesPoints[TAILLE_MAX]) {
 	changerCouleur(0.0F, 0.0F, 1.0F);
 	
 	glBegin(GL_LINE_STRIP);
@@ -236,15 +255,19 @@ void tracerGraphiqueTableau(Point tableauDesPoints[TAILLE_MAX]) {
 		glEnd();
 	}
 	//tracerLigneContinueFin();
-}
+}*/
 //même chose avec une liste chainée
-/*void tracerGraphiqueListe(Point listeDesPoints) {
-	tracerLigneContinueDepart(listeDesPoints->x, listeDesPoints->y);
-	while (listeDesPoints->suivant != NULL) {
-		listeDesPoints = listeDesPoints->suivant;
+Tableau tracerGraphiqueListe(Tableau Points) {
+	Tableau Ret = Points;
+
+	tracerLigneContinueDepart(Points->x, Points->y);
+	while (Points->suivant != NULL) {
+		Points = Points->suivant;
+		tracerLigneContinueSuite(Points->x, Points->y);
 	}
 	tracerLigneContinueFin();
-}*/
+	return Ret;
+}
 
 //trouver le centre des axes
 float centreDesAxes() {
@@ -331,12 +354,16 @@ void myDraw(void)
 		changerCouleur(1.0F, 0.0F, 0.0F);
 		bar(-0.5F, -0.5F, 0.5F, 0.5F);
 	}
-	/* ecrit le message "bonjour" en jaune */
-	changerCouleur(1.0F, 1.0F, 0.0F);
-	tracerGraphiqueTableau(creertableau());
+	
+	//changerCouleur(1.0F, 1.0F, 0.0F);
+	Tableau courbe = creerListe();
+	tracerGraphiqueListe(courbe);
+
+	//tracerGraphiqueTableau(creertableau());
 	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
 	tracerQuadrillage(2);
 	tracerAxes(2);
 	
+	freeListe(courbe);
 
 }
