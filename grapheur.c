@@ -347,8 +347,10 @@ void myDraw(void)
 		zoomOut = 0;
 	}
 	else if (zoomIn && !zoomOut) {
-		scale_x += 0.1;
-		scale_y += 0.1;
+		if (scale_x < 4.1 && scale_y < 4.1) {
+			scale_x += 0.1;
+			scale_y += 0.1;
+		}
 		zoomIn = 0;
 	}
 	glScaled(scale_x, scale_y, 0.0);
@@ -362,7 +364,9 @@ void myDraw(void)
 	Tableau courbe = creerListe();
 	courbe = tracerGraphiqueListe(courbe);
 
-	affichertexteXY(-1.0, 0.9, convFloatString(scale_x));
+	// AFFICHAGE INFOS
+	affichertexteXY(-1.0 / scale_x, 0.9 / scale_y, "Scale :");
+	affichertexteXY(-0.8/scale_x, 0.9/scale_y, convFloatString(scale_x));
 
 	freeListe(courbe);
 }
