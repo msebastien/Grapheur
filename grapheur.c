@@ -1,6 +1,12 @@
 ﻿#include "Projet.h"
 #include "grapheur.h"
 
+//variable globales, leur utilisation est inévitable pour la gestion des evenements
+int deplacementX = 0;
+int deplacementY = 0;
+float scale_x = 1.0;
+float scale_y = 1.0;
+
 int zoomIn = 0, zoomOut = 0;
 static int NumeroFenetre;
 static int Largeur, Hauteur;
@@ -259,35 +265,35 @@ float centreDesAxes() {
 }
 
 //tracer lexs axes, on  choisi un repère cartésien (0, Ox, Oy)
-void tracerAxes() {
+void tracerAxes(int deplacementX, int deplacementY) {
 	glBegin(GL_LINES);
 	changerCouleur(1.0F, 0.0F, 0.0F);
-	glVertex2f(0, -1000);
-	glVertex2f(0, 1000);
+	glVertex2f(deplacementX, -1000);
+	glVertex2f(deplacementX, 1000);
 
-	glVertex2f(-1000, 0);
-	glVertex2f(1000, 0);
+	glVertex2f(-1000, deplacementY);
+	glVertex2f(1000, deplacementY);
 	glEnd();
 }
 
 //fonction qui trace le quadrillage en fonction de la taille de la fenêtre
-void tracerQuadrillage() {
+void tracerQuadrillage(int deplacementX, int deplacementY) {
 	float centre = centreDesAxes();
 	changerCouleur(0.2F, 0.2F, 0.2F);
 	//quadrillage y
 	
 	for (float x = 500; x >= -500; x-=1) {
 		glBegin(GL_LINES);
-		glVertex2f(x, -500);
-		glVertex2f(x, 500);
+		glVertex2f(x + deplacementX, -500);
+		glVertex2f(x + deplacementX, 500);
 		glEnd();
 	}
 
 	//quadrillage x
 	for (float y = 500; y >= -500; y-=1) {
 		glBegin(GL_LINES);
-		glVertex2f(-500,  y);
-		glVertex2f(500,  y);
+		glVertex2f(-500,  y + deplacementY);
+		glVertex2f(500,  y - deplacementY);
 		glEnd();
 	}
 	
@@ -307,12 +313,24 @@ void myKey(int c)
 {
 	switch (c)
 	{
-	case 'z':
+	case 'e':
 		zoomIn = 1; /* La bascule passe alternativement de 0 a 1 */
 		printf("%d",zoomIn);
 		break;
 	case 'a':
 		zoomOut = 1;
+		break;
+	case 'z':
+		deplacementY += 1;
+		break;
+	case 's':
+		deplacementY -= 1;
+		break;
+	case 'q':
+		deplacementX -= 1;
+		break;
+	case 'd':
+		deplacementX += 1;
 		break;
 	}
 }
@@ -326,7 +344,7 @@ void myKey(int c)
 void myDraw(void)
 {	
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
-
+	
 	// Change l'échelle des axes
 	if (zoomOut && !zoomIn)
 	{
@@ -345,8 +363,8 @@ void myDraw(void)
 
 	affichertexteXY(-1.0, 0.9, itoa(f, scale_x, 10));
 
-	tracerQuadrillage(2);
-	tracerAxes();
+	tracerQuadrillage(deplacementX, deplacementY);
+	tracerAxes(deplacementX, deplacementY);
 	changerCouleur(0.0F, 0.0F, 1.0F);
 	
 	Tableau courbe = creerListe();
