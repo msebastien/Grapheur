@@ -302,7 +302,7 @@ void tracerQuadrillage() {
 	for (float y = 500; y >= -500; y-=1) {
 		glBegin(GL_LINES);
 		glVertex2f(-500,  y + deplacementY);
-		glVertex2f(500,  y - deplacementY);
+		glVertex2f(500,  y + deplacementY);
 		glEnd();
 	}
 	
