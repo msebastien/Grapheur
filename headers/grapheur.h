@@ -10,6 +10,7 @@
 
 #define TAILLE_MAX 256
 
+
 struct TableauSt{
 	float x;
 	float y;
@@ -17,11 +18,6 @@ struct TableauSt{
 };
 typedef struct TableauSt* Tableau;
 
-
-//int tracerGraphe(Point Coordonnees[], float echelle, int intervalleDebut, int intervalleFin, int pas);
-//int obtenirExpression(char* expression);
-//int afficherErreur(typeerreur erreur);
-//int obtenirEchelle(float echelle, int intervalleDebut, int intervalleFin, int pas);
 
 Tableau insererDansTableau(Tableau t, double i);
 Tableau creerListe();
@@ -43,7 +39,11 @@ static void InitDisplay(void);
 void affichertexteXY(const float x, const float y, const char *str);
 void bar(const float x0, const float y0, const float x1, const float y1);
 
+char* convFloatString(float x);
+
 // FONCTIONS DESSIN
+void tracerQuadrillage();
+void tracerAxes();
 void changerCouleur(const float r, const float g, const float b);
 void tracerPoint(const float x, const float y);
 void tracerLigne(const float x1, const float y1, const float x2, const float y2);
