@@ -335,10 +335,10 @@ void myKey(int c)
 		deplacementY += 1;
 		break;
 	case 'q':
-		deplacementX -= 1;
+		deplacementX += 1;
 		break;
 	case 'd':
-		deplacementX += 1;
+		deplacementX -= 1;
 		break;
 	case 'r':
 		deplacementX = 0;
