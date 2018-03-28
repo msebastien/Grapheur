@@ -279,36 +279,35 @@ float centreDesAxes() {
 }
 
 //tracer lexs axes, on  choisi un repère cartésien (0, Ox, Oy)
-void tracerAxes(int tailleFenetre) {
-	float centre = centreDesAxes();
+void tracerAxes() {
 	glBegin(GL_LINES);
 	changerCouleur(1.0F, 0.0F, 0.0F);
-	glVertex2f(0, centre - tailleFenetre / 2);
-	glVertex2f(0, centre + tailleFenetre / 2);
+	glVertex2f(0, -1000);
+	glVertex2f(0, 1000);
 
-	glVertex2f(-tailleFenetre / 2, centre);
-	glVertex2f(tailleFenetre / 2, centre);
+	glVertex2f(-1000, 0);
+	glVertex2f(1000, 0);
 	glEnd();
 }
 
 //fonction qui trace le quadrillage en fonction de la taille de la fenêtre
-void tracerQuadrillage(int tailleFenetre) {
+void tracerQuadrillage() {
 	float centre = centreDesAxes();
 	changerCouleur(0.2F, 0.2F, 0.2F);
 	//quadrillage y
 	
-	for (float x = 2; x >= -2; x-=0.1) {
+	for (float x = 500; x >= -500; x-=1) {
 		glBegin(GL_LINES);
-		glVertex2f(x, centre - tailleFenetre / 2);
-		glVertex2f(x, centre + tailleFenetre / 2);
+		glVertex2f(x, -500);
+		glVertex2f(x, 500);
 		glEnd();
 	}
 
 	//quadrillage x
-	for (float y = 2; y >= -2; y-=0.1) {
+	for (float y = 500; y >= -500; y-=1) {
 		glBegin(GL_LINES);
-		glVertex2f(-tailleFenetre / 2, centre + y);
-		glVertex2f(tailleFenetre / 2, centre + y);
+		glVertex2f(-500,  y);
+		glVertex2f(500,  y);
 		glEnd();
 	}
 	
@@ -362,7 +361,7 @@ void myDraw(void)
 	tracerGraphiqueTableau(creertableau());
 	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
 	tracerQuadrillage(2);
-	tracerAxes(2);
+	tracerAxes();
 	
 	//freeListe(courbe);
 
