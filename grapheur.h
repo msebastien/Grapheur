@@ -24,8 +24,9 @@ Point* creertableau ();
 //int afficherErreur(typeerreur erreur);
 //int obtenirEchelle(float echelle, int intervalleDebut, int intervalleFin, int pas);
 
-Tableau insererDansTableau(Tableau t, double i);
-Tableau creerListe();
+// insererDansTableau(Tableau t, double i);
+//Tableau creerListe();
+//void freeListe(Tableau Points);
 
 void InitialiserGraphique(int ac, char *av[],
 	const char *NomFenetre, const int l, const int h, void(*Dessin)(void),
