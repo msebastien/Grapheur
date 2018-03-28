@@ -7,34 +7,34 @@ static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
 
-/*Tableau creerListe() {
+Tableau creerListe() {
 	Tableau t;
 	t = NULL;
+	t = malloc(sizeof(struct TableauSt));
 
-	for (double i = -1; i < 1; i += 0.01) {
+	t->suivant = NULL;
+	for (double i = -10; i < 10; i += 0.01) {
 		t = insererDansTableau(t, i);
 	}
 
 	return t;
 }
+
 Tableau insererDansTableau(Tableau t, double i){
 	// Nouveau maillon
 	Tableau Points;
 	Points = malloc(sizeof(struct TableauSt));
-
-	// Initilaisation de ses champs
-		Points->x = i;
-		Points->y = cos(i);
-
-		Points->suivant = NULL;
-		Points = Points->suivant;
-	
+		
+	// Initialisation de ses champs
+	Points->x = i;
+	Points->y = cos(i);
+		
 	// Insertion en tête de liste
-	if(t != NULL) {
+	if (t != NULL) {
 		Points->suivant = t;
 	}
 
-	return t;
+	return Points;
 }
 
 void freeListe(Tableau Points){
@@ -44,18 +44,8 @@ void freeListe(Tableau Points){
 		freeListe(Points->suivant);
 		free(Points);
 	}
-}*/
-
-Point* creertableau() {
-	Point tableau_evaluateur[TAILLE_MAX];
-		for (float i = -10.0; i <= 10.0; i+=0.01) {
-			for (int j = 0; j < TAILLE_MAX; j++){
-			tableau_evaluateur[j].x = (double)i; // x
-			tableau_evaluateur[j].y = sin((double)i); // f(x)
-		}
-	}
-		return tableau_evaluateur;
 }
+
 
 /**
 * GlutRedimensionner
@@ -213,6 +203,12 @@ void changerCouleur(const float r, const float g, const float b) {
 	glColor3f(r, g, b);
 }
 
+void tracerPoint(const float x, const float y) {
+	glBegin(GL_POINT);
+	glVertex2f(x, y);
+	glEnd();
+}
+
 //tracer une ligne entre 2 points
 void tracerLigne(const float x1, const float y1, const float x2, const float y2) {
 	glBegin(GL_LINES);
@@ -237,35 +233,16 @@ void tracerLigneContinueFin() {
 }
 
 //tracer le graphique de la fonction rentrée
-void tracerGraphiqueTableau(Point tableauDesPoints[TAILLE_MAX]) {
-	changerCouleur(0.0F, 0.0F, 1.0F);
-	/*
-	glBegin(GL_LINE_STRIP);
-	glVertex2f(tableauDesPoints[0].x, tableauDesPoints[0].y);
-	glVertex2f(tableauDesPoints[1].x, tableauDesPoints[1].y);
-	glEnd();*/
-	
-	tracerLigneContinueDepart(tableauDesPoints[0].x, tableauDesPoints[0].y);
-
-	for (int i = 2; i < TAILLE_MAX; i++) {//paramètre TAILLE_TABLEAU à définir
-		tracerLigneContinueSuite(tableauDesPoints[i].x, tableauDesPoints[i].y);
-		/*glBegin(GL_LINE_STRIP);
-		glVertex2f(tableauDesPoints[i].x, tableauDesPoints[i].y);
-		glVertex2f(tableauDesPoints[i+1].x, tableauDesPoints[i+1].y);
-		glEnd();*/
-	}
-	tracerLigneContinueFin();
-}
-//même chose avec une liste chainée
 Tableau tracerGraphiqueListe(Tableau Points) {
 	Tableau Ret = Points;
 
-	tracerLigneContinueDepart(Points->x, Points->y);
+	glBegin(GL_LINE_STRIP);
+	glVertex2f(Points->x, Points->y);
 	while (Points->suivant != NULL) {
 		Points = Points->suivant;
-		tracerLigneContinueSuite(Points->x, Points->y);
+		glVertex2f(Points->x, Points->y);
 	}
-	tracerLigneContinueFin();
+	glEnd();
 	return Ret;
 }
 
@@ -342,7 +319,7 @@ void myKey(int c)
 void myDraw(void)
 {
 	// Change l'échelle des axes
-	glScaled(1.0,1.0,0.0);
+	glScaled(0.2, 0.2,0.0);
 
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
@@ -353,16 +330,20 @@ void myDraw(void)
 		changerCouleur(1.0F, 0.0F, 0.0F);
 		bar(-0.5F, -0.5F, 0.5F, 0.5F);
 	}
-	
-	//changerCouleur(1.0F, 1.0F, 0.0F);
-	//Tableau courbe = creerListe();
-	//tracerGraphiqueListe(courbe);
 
-	tracerGraphiqueTableau(creertableau());
-	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
 	tracerQuadrillage(2);
+<<<<<<< HEAD
 	tracerAxes();
+=======
+	tracerAxes(2);
+	changerCouleur(0.0F, 0.0F, 1.0F);
+	Tableau courbe = creerListe();
+	courbe = tracerGraphiqueListe(courbe);
+
+	//tracerLigne(-1.0, -1.0, 1.0, 1.0);
 	
-	//freeListe(courbe);
+>>>>>>> 5e29cd105ebad10fc3e8d2fb5a7da13d3e3c2dda
+	
+	freeListe(courbe);
 
 }
