@@ -257,10 +257,10 @@ Tableau tracerGraphiqueListe(Tableau Points) {
 	Tableau Ret = Points;
 
 	glBegin(GL_LINE_STRIP);
-	glVertex2f(Points->x, Points->y);
+	glVertex2f(Points->x + deplacementX, Points->y + deplacementY);
 	while (Points->suivant != NULL) {
 		Points = Points->suivant;
-		glVertex2f(Points->x, Points->y);
+		glVertex2f(Points->x + deplacementX, Points->y + deplacementY);
 	}
 	glEnd();
 	return Ret;
@@ -276,7 +276,7 @@ float centreDesAxes() {
 }
 
 //tracer lexs axes, on  choisi un repère cartésien (0, Ox, Oy)
-void tracerAxes(int deplacementX, int deplacementY) {
+void tracerAxes() {
 	glBegin(GL_LINES);
 	changerCouleur(1.0F, 0.0F, 0.0F);
 	glVertex2f(deplacementX, -1000);
@@ -288,7 +288,7 @@ void tracerAxes(int deplacementX, int deplacementY) {
 }
 
 //fonction qui trace le quadrillage en fonction de la taille de la fenêtre
-void tracerQuadrillage(int deplacementX, int deplacementY) {
+void tracerQuadrillage() {
 	float centre = centreDesAxes();
 	changerCouleur(0.2F, 0.2F, 0.2F);
 	//quadrillage y
