@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	
 	gets(expression);*/
 	
-	InitialiserGraphique(argc, argv, "Grapheur", 800, 600, myDraw, myKey);
+	InitialiserGraphique(argc, argv, "Grapheur", LARGEUR_FENETRE, HAUTEUR_FENETRE, myDraw, myKey);
 
 	return EXIT_SUCCESS;
 }

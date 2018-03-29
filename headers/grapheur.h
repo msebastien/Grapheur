@@ -9,6 +9,8 @@
 #include <GLUT.H>
 
 #define TAILLE_MAX 256
+#define LARGEUR_FENETRE 800
+#define HAUTEUR_FENETRE 600
 
 
 struct TableauSt{

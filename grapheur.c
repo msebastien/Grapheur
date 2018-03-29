@@ -1,18 +1,23 @@
 ﻿#include "Projet.h"
 #include "grapheur.h"
 
-//variable globales, leur utilisation est inévitable pour la gestion des evenements
+//variables globales, leur utilisation est inévitable pour la gestion des evenements
 int deplacementX = 0;
 int deplacementY = 0;
-float scale_x = 1.0;
-float scale_y = 1.0;
+float scale_x = 0.1;
+float scale_y = 0.1;
 
 int zoomIn = 0, zoomOut = 0;
+float sourisPosX = 0.0, sourisPosY = 0.0;
+
 static int NumeroFenetre;
 static int Largeur, Hauteur;
 static void(*AppliDessin)(void);
 static void(*AppliTouche)(int);
 
+/*void InitialiserEchelle(Tableau t) {
+
+}*/
 
 char* convFloatString(float x) {
 	char* str = NULL;
@@ -30,7 +35,7 @@ Tableau creerListe() {
 	t = malloc(sizeof(struct TableauSt));
 
 	t->suivant = NULL;
-	for (double i = -10; i < 10; i += 0.01) {
+	for (double i = -20; i < 10; i += 0.01) {
 		t = insererDansTableau(t, i);
 	}
 
@@ -44,7 +49,7 @@ Tableau insererDansTableau(Tableau t, double i){
 		
 	// Initialisation de ses champs
 	Points->x = i;
-	Points->y = cos(i);
+	Points->y = sin(tan(i));
 		
 	// Insertion en tête de liste
 	if (t != NULL) {
@@ -83,7 +88,7 @@ static void GlutRedimensionner(const int l, const int h)
 
 static void GlutIdle(void)
 {
-	  //glutPostRedisplay();
+	  glutPostRedisplay();
 }
 
 static void GlutTouche(const unsigned char c, const int x, const int y)
@@ -134,6 +139,16 @@ static void GlutDraw(void)
 	if (AppliDessin) (*AppliDessin)();
 	End2DDisplay();
 	glutSwapBuffers();
+}
+
+void GlutSuivreSouris(int x, int y) {
+	sourisPosX = (float)x;
+	sourisPosY = (float)y;
+	
+	glMatrixMode(GL_PROJECTION);
+	sourisPosX = (x - (Largeur / 2)) / ((Largeur / 2) * scale_x);
+	sourisPosY = -1 * (y - (Hauteur / 2)) / ((Hauteur / 2) * scale_y);
+
 }
 
 /**
@@ -195,13 +210,16 @@ void InitialiserGraphique(int ac, char *av[],
 	glutInit(&ac, av);
 	
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	//glutEstablishOverlay();
+	
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(Largeur, Hauteur);
 
 	NumeroFenetre = glutCreateWindow(NomFenetre);
 
 	glutReshapeFunc(GlutRedimensionner); /* fonction appelee qd fenetre redimensionnee */
+
+	// Fonction appelee des qu'il ya un mouvement de la souris lorsque le curseur est dans la fenetre
+	glutPassiveMotionFunc(GlutSuivreSouris);
 
 	glutIdleFunc(GlutIdle); /* fonction appelee en boucle */
 	AppliTouche = Touche;
@@ -234,7 +252,6 @@ void tracerLigne(const float x1, const float y1, const float x2, const float y2)
 	glVertex2f(x2, y2);
 	glEnd();
 }
-
 
 //tracer une ligne en continu
 void tracerLigneContinueDepart(const float x, const float y) {
@@ -287,7 +304,7 @@ void tracerAxes() {
 
 //fonction qui trace le quadrillage en fonction de la taille de la fenêtre
 void tracerQuadrillage() {
-	float centre = centreDesAxes();
+	float centre = 0;
 	changerCouleur(0.2F, 0.2F, 0.2F);
 	//quadrillage y
 	
@@ -361,7 +378,7 @@ void myDraw(void)
 	// Change l'échelle des axes
 	if (zoomOut && !zoomIn)
 	{
-		if (scale_x > 0.1 && scale_y > 0.1 ) {
+		if (scale_x > 0.2 && scale_y > 0.2 ) {
 			scale_x -= 0.1;
 			scale_y -= 0.1;
 		}
@@ -387,12 +404,17 @@ void myDraw(void)
 
 	// AFFICHAGE INFOS
 	changerCouleur(1.0F, 0.0F, 0.0F);
-	affichertexteXY( (0.0 / scale_x) + deplacementX, (0.9 / scale_y), "Y");
-	affichertexteXY( (0.9 / scale_x), (0.0 / scale_y) + deplacementY, "X");
+	affichertexteXY( (0.0 / scale_x) + deplacementX, (0.95 / scale_y), "Y");
+	affichertexteXY( (0.95 / scale_x), (0.0 / scale_y) + deplacementY, "X");
 
 	changerCouleur(0.0F, 1.0F, 0.0F);
 	affichertexteXY(-1.0 / scale_x, 0.9 / scale_y, "Scale :");
 	affichertexteXY(-0.8/scale_x, 0.9/scale_y, convFloatString(scale_x));
+
+	affichertexteXY(-1.0 / scale_x, 0.8 / scale_y, "X = ");
+	affichertexteXY(-0.8 / scale_x, 0.8 / scale_y, convFloatString(sourisPosX));
+	affichertexteXY(-1.0 / scale_x, 0.7 / scale_y, "Y = ");
+	affichertexteXY(-0.8 / scale_x, 0.7 / scale_y, convFloatString(sourisPosY));
 
 	freeListe(courbe);
 }
